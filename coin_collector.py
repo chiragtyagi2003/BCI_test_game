@@ -45,16 +45,27 @@ coin_width = 20
 coin_height = 20
 coin_x = random.randint(0, SCREEN_WIDTH - coin_width)
 coin_y = 0
-coin_speed = 5
+coin_speed = 4
 
 # Score
 score = 0
 font = pygame.font.Font(None, 36)
+flash_counter = 0
 
 # Function to display score
 def display_score():
     text = font.render(f'Score: {score}', True, WHITE)
     screen.blit(text, (10, 10))
+
+# Function to display direction
+def display_direction():
+    global flash_counter
+    direction_text = f"Direction: {player_direction.capitalize() if player_direction else 'Neutral'}"
+    flash = flash_counter % 30 < 15  # Flash the text every half-second
+    if flash:
+        text = font.render(direction_text, True, RED)
+        screen.blit(text, (10, 50))
+    flash_counter += 1
 
 # Function to move player
 def move_player():
@@ -156,6 +167,9 @@ while running:
 
     # Display score
     display_score()
+
+    # Display direction
+    display_direction()
 
     # Check for collisions
     check_collision()
